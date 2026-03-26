@@ -8,7 +8,7 @@
 * Інтерпретатор: `Python 3.9+`
 * Необхідні бібліотеки:  `pandas`, `numpy`, `scikit-learn`, `jupyter` тощо(можна подивитись у разі необхідності у requirements.txt )
 ## Інструкція із запуску:
-1. Відкрити термінал у теці `lab-2`
+1. Відкрити термінал у теці `lab-3`
 2. Створити `python -m venv venv` та активувати віртуальне середовище `venv\Scripts\activate`
 3. Встановити усі необхідні залежності: `pip install -r requirements.txt`
 4. Запустити Jupyter Notebook в терміналі: `jupyter notebook`
