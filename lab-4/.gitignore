@@ -1,0 +1,17 @@
+# Файли Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Тимчасові файли
+*.log
+*.tmp
+*.bak
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS файли
+.DS_Store
+Thumbs.db
