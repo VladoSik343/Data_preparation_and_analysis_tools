@@ -53,8 +53,8 @@ C++ openCV
 
 ```bash
 1. Клонуйте репозиторій:
-git clone <url-вашого-репозиторію>
-cd Lab_6_zpad
+git clone <https://github.com/VladoSik343/Data_preparation_and_analysis_tools.git>
+cd lab-6
 2. Надайте права на виконання скриптам:
 chmod +x preinstall.sh build.sh run.sh
 3.Перетворити формат рядків(помилка виникає через те, що файл має неправильний формат рядків):
