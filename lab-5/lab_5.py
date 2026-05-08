@@ -1,8 +1,24 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import urllib.request
+import os
+from datetime import datetime
 st.title("Аналіз VCI/TCI/VHI")
+os.makedirs("VHI_data", exist_ok=True)
+
+def download_all_files():
+    with st.spinner("Завантаження даних з NOAA..."):
+        for provinceID in range(1, 28):
+            url = f"https://www.star.nesdis.noaa.gov/smcd/emb/vci/VH/get_TS_admin.php?country=UKR&provinceID={provinceID}&year1=1981&year2=2024&type=Mean"
+            time = datetime.now().strftime("%Y%m%d")
+            file_name = f"vhi_province_{provinceID}_{time}.csv"
+            file_path = os.path.join("VHI_data", file_name)
+            if not os.path.exists(file_path):
+                urllib.request.urlretrieve(url, file_path)
+    st.success("Всі файли завантажено!")
+if not os.listdir("VHI_data"):
+    download_all_files()
 province_names = {
     1: "Черкаська", 2: "Чернігівська", 3: "Чернівецька", 4: "Республіка Крим",
     5: "Дніпропетровська", 6: "Донецька", 7: "Івано-Франківська", 8: "Харківська",
@@ -12,7 +28,6 @@ province_names = {
     21: "Сумська", 22: "Тернопільська", 23: "Закарпатська", 24: "Вінницька",
     25: "Волинська", 26: "Запорізька", 27: "Житомирська"
 }
-
 prv_list = list(province_names.values())
 min_y, max_y = 1982, 2024
 
@@ -22,7 +37,13 @@ def week_to_date(year, week):
 
 @st.cache_data
 def load_data(province_num):
-    file_path = f'VHI_data/vhi_province_{province_num}_20260313.csv'
+    time = datetime.now().strftime("%Y%m%d")
+    file_path = f'VHI_data/vhi_province_{province_num}_{time}.csv'
+    if not os.path.exists(file_path):
+        for f in os.listdir("VHI_data"):
+            if f.startswith(f"vhi_province_{province_num}_"):
+                file_path = os.path.join("VHI_data", f)
+                break
     df = pd.read_csv(file_path, skiprows=2, encoding='utf-8', usecols=range(7))
     df.columns = ['year', 'week', 'SMN', 'SMT', 'VCI', 'TCI', 'VHI']
     df = df.replace(r'<[^>]*>', '', regex=True)
@@ -42,7 +63,6 @@ if 'wks' not in st.session_state: st.session_state.wks = (1, 52)
 if 'yrs' not in st.session_state: st.session_state.yrs = (min_y, max_y)
 if 'sort_asc' not in st.session_state: st.session_state.sort_asc = False
 if 'sort_desc' not in st.session_state: st.session_state.sort_desc = False
-if 'top_n' not in st.session_state: st.session_state.top_n = 10
 
 def get_index(list_name, value):
     return list_name.index(value) if value in list_name else 0
@@ -103,7 +123,6 @@ with right_col:
         st.dataframe(show_df, use_container_width=True)
     with tab2:
         st.write("### Візуалізація даних")
-        
         st.write(f"#### Динаміка {st.session_state.idx} для {st.session_state.prv} області")
         df_for_plot = df_filtered.sort_values('date')
         fig1, ax1 = plt.subplots(figsize=(10, 4))
@@ -130,6 +149,7 @@ with right_col:
             ["Всі області", "ТОП області + обрана"],
             horizontal=True
         )
+        
         means_data = []
         for prov_name in prv_list:
             prov_num_temp = [k for k, v in province_names.items() if v == prov_name][0]
@@ -139,7 +159,9 @@ with right_col:
                 'Область': prov_name,
                 'Середнє': df_temp_filtered[st.session_state.idx].mean()
             })
+        
         means_df = pd.DataFrame(means_data).sort_values('Середнє', ascending=False)
+        
         if comparison_type == "ТОП області + обрана":
             top_n = st.slider("Кількість областей у ТОП:", 3, 27, 10)
             top_df = means_df.head(top_n).copy()
@@ -158,8 +180,11 @@ with right_col:
         ax2.set_title(f"Порівняння середніх значень {st.session_state.idx} по областях")
         ax2.grid(True, alpha=0.3, axis='y')
         plt.xticks(rotation=90)
+        
         for bar, val in zip(bars, display_df['Середнє']):
-            ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.5, f'{val:.1f}', ha='center', va='bottom', fontsize=8)
+            ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.5, f'{val:.1f}', 
+                    ha='center', va='bottom', fontsize=8)
+        
         st.pyplot(fig2)
         st.success(f"**{st.session_state.prv} область** виділена червоним кольором")
         st.dataframe(display_df, use_container_width=True)
