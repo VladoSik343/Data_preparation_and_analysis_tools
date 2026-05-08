@@ -30,11 +30,11 @@
 ## Вимоги до системи:
 * Операційна система: `Windows`/`Linux`/`macOS`
 * Інтерпретатор: `Python 3.9+`
-* Необхідні бібліотеки:  `streamlit`, `pandas`, `matplotlib`, тощо(можна подивитись у разі необхідності у requirements.txt )
+* Необхідні бібліотеки:  `streamlit`, `pandas`, `matplotlib`(можна подивитись у разі необхідності у requirements.txt )
 ## Інструкція із запуску:
 2. Встановити віртуальне середовище: `python -m venv venv`
 3. Активувати віртуальне середовище:
    - Windows: `venv\Scripts\activate`
    - Linux/Mac: `source venv/bin/activate`
-4. Встановити залежності: `pip install streamlit pandas matplotlib`
+4. Встановити залежності: `pip install -r requirements.txt`
 5. Запустити додаток: `streamlit run lab_5.py`
