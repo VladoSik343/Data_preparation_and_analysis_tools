@@ -23,6 +23,8 @@ enum class MouseAction {
     NONE,
     LEFT_BUTTON_DOWN,
     LEFT_BUTTON_UP,
+    RIGHT_BUTTON_DOWN, 
+    RIGHT_BUTTON_UP, 
     MOUSE_MOVE,
     MOUSE_WHEEL
 };
