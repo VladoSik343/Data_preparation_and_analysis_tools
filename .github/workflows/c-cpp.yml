@@ -1,0 +1,31 @@
+name: C++ CI with OpenCV and Catch2
+
+on:
+  push:
+    branches: [ "main", "master", "lab_7" ] 
+  pull_request:
+    branches: [ "main", "master", "lab_7" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Build Essentials & OpenCV
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential libopencv-dev
+
+    - name: Configure CMake
+      run: cmake -B build -S lab_7
+
+    - name: Build Project
+      run: cmake --build build --config Release
+
+    - name: Run Lab 7 Tests
+      run: |
+        cd build
+        ./lab7_tests

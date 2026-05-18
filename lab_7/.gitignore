@@ -1,0 +1,63 @@
+# Збірка та тимчасові файли
+build/
+cmake-build-*/
+*.o
+*.so
+*.a
+*.exe
+*.dll
+*.dylib
+
+# Файли проекту CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# Виконувані файли
+camera_app
+bin/
+*.out
+
+# Файли IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.codeblocks/
+*.user
+
+# Логи
+*.log
+
+# Тимчасові файли OpenCV
+*.jpg
+*.png
+*.bmp
+output_video.avi
+
+# Файли резервних копій
+*.bak
+*.backup
+*.old
+
+# Папки з пакетами
+__pycache__/
+*.pyc
+
+# Файли, створені під час роботи
+debug.log
+error.log
+
+# Специфічні для Ubuntu/Debian
+*.deb
+*.rpm
+
+# Файли зображень для тестування
+test_image_*.png
+result_*.jpg
+
+
